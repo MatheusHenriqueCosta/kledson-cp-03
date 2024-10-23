@@ -78,6 +78,7 @@ resource "azurerm_public_ip" "ip" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
+  sku = "standard"
 }
 resource "azurerm_subnet_network_security_group_association" "nsgsubnet1a" {
     subnet_id                 = azurerm_subnet.subnet-public.id
@@ -161,9 +162,6 @@ CUSTOM_DATA
     }
 }
 
-output "public_ip_address" {
-value = azurerm_virtual_machine.vm01.public_ip_address
-}
 resource "azurerm_virtual_machine" "vm02" {
     name                             = "vm02"
     location                         = azurerm_resource_group.rg.location
