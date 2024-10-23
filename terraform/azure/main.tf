@@ -78,7 +78,7 @@ resource "azurerm_public_ip" "ip" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
-  sku = "standard"
+  sku = "Standard"
 }
 resource "azurerm_subnet_network_security_group_association" "nsgsubnet1a" {
     subnet_id                 = azurerm_subnet.subnet-public.id
