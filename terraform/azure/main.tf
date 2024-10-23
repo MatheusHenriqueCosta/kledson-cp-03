@@ -73,6 +73,12 @@ resource "azurerm_network_security_group" "nsgvm" {
     }
 }
 
+resource "azurerm_public_ip" "ip" {
+  name                = "terra-pip"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  allocation_method   = "Dynamic"
+}
 resource "azurerm_subnet_network_security_group_association" "nsgsubnet1a" {
     subnet_id                 = azurerm_subnet.subnet-public.id
     network_security_group_id = azurerm_network_security_group.nsgvm.id
@@ -91,6 +97,7 @@ resource "azurerm_network_interface" "vm01" {
         name                          = "vm01"
         subnet_id                     = azurerm_subnet.subnet-public.id
         private_ip_address_allocation = "Dynamic"
+        public_ip_address_id = azurerm_public_ip.ip.id
     }
 }
 
@@ -107,6 +114,12 @@ resource "azurerm_network_interface" "vm02" {
 
 resource "azurerm_availability_set" "asvm" {
     name                = "asvm"
+    location            = azurerm_resource_group.rg.location
+    resource_group_name = azurerm_resource_group.rg.name
+}
+
+resource "azurerm_availability_set" "asvm2" {
+    name                = "asvm2"
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
 }
@@ -153,7 +166,7 @@ resource "azurerm_virtual_machine" "vm02" {
     location                         = azurerm_resource_group.rg.location
     resource_group_name              = azurerm_resource_group.rg.name
     network_interface_ids            = [azurerm_network_interface.vm02.id]
-    availability_set_id              = azurerm_availability_set.asvm.id
+    availability_set_id              = azurerm_availability_set.asvm2.id
     vm_size                          = "Standard_DS1_v2"
     delete_os_disk_on_termination    = true
     delete_data_disks_on_termination = true
