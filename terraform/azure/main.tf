@@ -161,6 +161,9 @@ CUSTOM_DATA
     }
 }
 
+output "public_ip_address" {
+value = azurerm_virtual_machine.vm01.public_ip_address
+}
 resource "azurerm_virtual_machine" "vm02" {
     name                             = "vm02"
     location                         = azurerm_resource_group.rg.location
